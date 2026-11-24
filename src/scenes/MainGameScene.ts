@@ -42,7 +42,14 @@ export class MainGameScene extends Scene {
             console.error('No keyboard input');
         }
 
-        this.enemies = this.physics.add.group();
+        this.enemies = this.physics.add.group({
+            classType: Enemy,
+            defaultKey: 'sprites',
+            defaultFrame: 'ufoRed',
+            createCallback: (enemy) => {
+                (enemy as Enemy).init(this.enemyBullets);
+            }
+        });
 
         // noinspection JSUnusedGlobalSymbols
         const bulletGroupConfig = {
@@ -80,7 +87,7 @@ export class MainGameScene extends Scene {
         // Add collisions detection
         this.physics.add.overlap(this.playerBullets, this.enemies, (bullet, enemy) => {
             (bullet as Bullet).disable();
-            enemy.destroy();
+            (enemy as Enemy).disable();
             this.playerScore++;
             console.log("Score: " + this.playerScore);
         });
@@ -98,13 +105,12 @@ export class MainGameScene extends Scene {
     }
 
     private spawnEnemy() {
-        if (this.enemies.getLength() >= 5) {
+        if (this.enemies.countActive(true) >= 5) {
             return;
         }
 
-        const enemy = new Enemy(this, Phaser.Math.Between(64, this.cameras.main.width - 64), -64, 'sprites', 'ufoRed');
-        this.enemies.add(enemy);
-        enemy.init(this.enemyBullets);
+        const enemy = this.enemies.get() as Enemy;
+        enemy.enable(Phaser.Math.Between(64, this.cameras.main.width - 64), 0);
     }
 
     update(_timeSinceLaunch: number, deltaTime: number) {

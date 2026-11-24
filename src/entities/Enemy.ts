@@ -2,17 +2,19 @@ import Entity from './Entity.ts';
 import Bullet from "./Bullet.ts";
 
 export default class Enemy extends Entity {
+    private _shootTimerConfig: Phaser.Types.Time.TimerEventConfig;
     private _shootTimer: Phaser.Time.TimerEvent;
 
     public init(bulletsGroup: Phaser.Physics.Arcade.Group) {
         this.bullets = bulletsGroup;
 
-        this._shootTimer = this.scene.time.addEvent({
+        this._shootTimerConfig = {
             delay: Phaser.Math.Between(2000, 3000),
             callback: this.shoot,
             callbackScope: this,
             loop: true
-        });
+        };
+        this._shootTimer = this.scene.time.addEvent(this._shootTimerConfig);
 
         // Create animation when enemy is about to shoot in the global animation manager
         if (!this.scene.anims.exists('ufoShoot')) {
@@ -26,14 +28,20 @@ export default class Enemy extends Entity {
                 frameRate: 4,
             });
         }
+    }
 
+    public enable(x: number, y: number) {
+        this.enableBody(true, x, y - this.displayHeight, true, true);
+        this._shootTimer.reset(this._shootTimerConfig);
         this.arcadeBody.setVelocityY(256);
     }
 
-    destroy(fromScene?: boolean) {
-        this._shootTimer?.remove();
+    public disable() {
+        this.stop();
+        this.removeAllListeners(Phaser.Animations.Events.ANIMATION_COMPLETE);
 
-        super.destroy(fromScene);
+        this.disableBody(true, true);
+        this._shootTimer.paused = true;
     }
 
     private shoot() {
@@ -53,7 +61,7 @@ export default class Enemy extends Entity {
 
         // Destroy entities when out of screen
         if (this.y > this.scene.cameras.main.height + this.displayHeight) {
-            this.destroy();
+            this.disable();
         }
     }
 }

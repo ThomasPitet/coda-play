@@ -1,0 +1,33 @@
+{
+    "sinusoidal": {
+        "texture": "ufoRed",
+        "tint": 10182117,
+        "spawnDelay": 3200,
+        "maxCount": 3,
+        "movement": {
+            "speedY": 0.15,
+            "amplitude": 90,
+            "frequency": 0.003
+        },
+        "weapon": {
+            "fireRateMin": 2200,
+            "fireRateMin": 3000,
+            "bulletCount": 3,
+            "spreadAngle": 35,
+            "bullet": {
+                "width": 12,
+                "height": 12,
+                "color": 10182117,
+                "speed": 420,
+                "damage": 1
+            }
+        },
+        "troll": {
+            "enabled": true,
+            "jukeInterval": 1400,
+            "jukeMultiplier": 2.2,
+            "deathBurstCount": 8,
+            "deathBurstSpread": 360
+        }
+    }
+}

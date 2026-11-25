@@ -21,3 +21,14 @@ export type LevelDevilTrollData = {
     deathBurstCount: number;
     deathBurstSpread: number;
 };
+
+export type SinusoidalEnemyData = {
+    texture: string;
+    tint: number;
+    spawnDelay: number;
+    maxCount: number;
+    movement: SinusoidalMovementData;
+    weapon: SpreadWeaponData;
+    troll: LevelDevilTrollData;
+};
+

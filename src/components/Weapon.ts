@@ -14,14 +14,16 @@ export default class Weapon implements IComponent {
 
     private readonly _bullets: Physics.Arcade.Group;
     private readonly _bulletData: BulletData;
+    private _spreadConfig?: WeaponSpreadConfig;
 
-    constructor(bullets: Physics.Arcade.Group, bulletData: BulletData) {
+    constructor(bullets: Physics.Arcade.Group, bulletData: BulletData, spreadConfig?: WeaponSpreadConfig) {
         if (!bullets) {
             console.error("Weapon 'bullets' group cannot be null or undefined");
         }
 
         this._bullets = bullets;
         this._bulletData = bulletData;
+        this._spreadConfig = spreadConfig;
     }
 
     public shoot(source: Entity) {

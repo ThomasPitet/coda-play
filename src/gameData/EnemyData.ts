@@ -12,4 +12,12 @@ export type SpreadWeaponData = {
     bulletCount: number;
     spreadAngle: number;
     bullet: BulletData;
-}
+};
+
+export type LevelDevilTrollData = {
+    enabled: boolean;
+    jukeInterval: number;
+    jukeMultiplier: number;
+    deathBurstCount: number;
+    deathBurstSpread: number;
+};

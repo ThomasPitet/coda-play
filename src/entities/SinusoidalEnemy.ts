@@ -29,7 +29,7 @@ export default class SinusoidalEnemy extends Entity {
             if (health?.current === 0) {
                 this.disableBody();
 
-                if (this.data.troll?.enabled && this._data.troll.deathBurstCount > 0) {
+                if (this._data.troll?.enabled && this._data.troll.deathBurstCount > 0) {
                     this.getComponent(Weapon)?.shoot(this, {
                         bulletCount: this._data.troll.deathBurstCount,
                         spreadAngle: this._data.troll.deathBurstSpread
@@ -40,7 +40,7 @@ export default class SinusoidalEnemy extends Entity {
 
             this.scene.time.delayedCall(50, () => {
                 if (health?.current === 0) {
-                    this.disableBody();
+                    this.disable();
                 } else {
                     this.setTint(this._data.tint);
                 }
@@ -58,12 +58,12 @@ export default class SinusoidalEnemy extends Entity {
     }
 
     public enable(x: number, y: number) {
-        this.enableBody(true, x, y - thisdisplayHeight, true, true);
+        this.enableBody(true, x, y - this.displayHeight, true, true);
         this.setTint(this._data.tint);
         this.getComponent(SinusoidalMovement)?.reset(x);
         this._shootTimer.reset(this._shootTimerConfig);
 
-        const health = thisComponent(Health);
+        const health = this.getComponent(Health);
         health?.heal(health!.max, false);
     }
 
@@ -71,7 +71,7 @@ export default class SinusoidalEnemy extends Entity {
         this.stop();
         this.removeAllListeners(Phaser.Animations.Events.ANIMATION_COMPLETE);
         this.disableBody(true, true);
-        this._shootTimer.paused = true,  
+        this._shootTimer.paused = true;
     }
 
     private shoot() {
@@ -82,5 +82,17 @@ export default class SinusoidalEnemy extends Entity {
             this.getComponent(Weapon)?.shoot(this);
             this.scene.sound.play('sfx_laser2');
         });
+    }
+
+    preUpdate(timeSinceLaunch: number, deltaTime: number) {
+        super.preUpdate(timeSinceLaunch, deltaTime);
+
+        if (this.y > this.scene.cameras.main.height + this.displayHeight) {
+            this.disable();
+            return;
+        }
+
+        const slowdown = this.isTinted ? 0.5 : 1.0;
+        this.getComponent(SinusoidalMovement)?.updateMovement(this, deltaTime * slowdown);
     }
 }

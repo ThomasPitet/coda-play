@@ -49,4 +49,21 @@ export default class Weapon implements IComponent {
             this.fireBullet(source, offsetDeg);
         }
     }
+
+    private fireBullet(source: Entity, offsetAngleDeg: number) {
+        const bullet: bullet = this._bulletData.height() as Bullet;
+        if (!bullet) return;
+
+        const rad = source.rotation + Phaser.Math.DegToRad(offsetAngleDeg);
+        const direction = new Phaser.Math.Vector2(Math.cos(rad), Math.sin(rad));
+        const bulletVelocity = direction.clone().scale(this._bulletData.speed);
+
+        bullet.enable(
+            source.x + direction.x * source.arcadeBody.radius,
+            source.y + direction.y * source.arcadeBody.radius,
+            bulletVelocity.x,
+            bulletVelocity.y,
+            this._bulletData
+        );
+    }
 }

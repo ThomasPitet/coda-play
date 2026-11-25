@@ -21,4 +21,22 @@ export default class SinusoidalMovement implements IComponent {
         this._elapsedTime = 0;
         this._jukeTimer = 0;
     }
+
+    public updateMovement(entity: Entity, deltaTime: number) {
+        if (!this.enabled) return;
+
+        this._elapsedTime += deltaTime;
+        this._jukeTimer += deltaTime;
+
+        entity.y += this._config.speedY * deltaTime;
+
+        let currentAmplitude = this._config.amplitude;
+        if (this._trollConfig?.enabled && this._jukeTimer >= this._trollConfig.jukeInterval) {
+            currentAmplitude *= this._trollConfig.jukeMultiplier;
+            if (this._jukeTimer >= this._trollConfig.jukeInterval + 250) {
+                this._jukeTimer = 0;
+            }
+        }
+        entity.x = this._baseX + currentAmplitude * Math.sin(this._elapsedTime * this._config.frequency);
+    }
 }

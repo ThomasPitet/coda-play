@@ -32,3 +32,6 @@ export type SinusoidalEnemyData = {
     troll: LevelDevilTrollData;
 };
 
+export type EnemiesData = {
+    sinusoidal: SinusoidalEnemyData;
+}; 

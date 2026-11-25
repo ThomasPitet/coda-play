@@ -56,4 +56,15 @@ export default class SinusoidalEnemy extends Entity {
         this._shootTimer = this.scene.time.addEvent(this._shootTimerConfig);
         this.arcadeBody.setCircle(this.displayWidth / 2);
     }
+
+    public enable(x: number, y: number) {
+        this.enableBody(true, x, y - thisdisplayHeight, true, true);
+        this.setTint(this._data.tint);
+        this.getComponent(SinusoidalMovement)?.reset(x);
+        this._shootTimer.reset(this._shootTimerConfig);
+
+        const health = thisComponent(Health);
+        health?.heal(health!.max, false);
+    }
+
 }

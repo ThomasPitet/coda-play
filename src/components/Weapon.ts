@@ -26,28 +26,27 @@ export default class Weapon implements IComponent {
         this._spreadConfig = spreadConfig;
     }
 
-    public shoot(source: Entity) {
-        if (!this.enabled)
+    public shoot(source: Entity, customSpread?: WeaponSpreadConfig) {
+        if (!this.enabled || !this._bullets) {
             return;
+        }
 
-        if (!this._bullets)
+        const config = customSpread ?? this._spreadConfig;
+        const count = config?.bulletCount ?? 1;
+        const totalAngleDeg = Config?.spreadAngle ?? 0;
+
+        if (count <= 1 || totalAngleDeg === 0) {
+            this.fireBullet(source, 0);
             return;
+        }
 
-        const bullet: Bullet = this._bullets.get() as Bullet;
-        if (bullet) {
-            // Get forward vector of the source entity
-            const sourceForward: Phaser.Math.Vector2 = new Phaser.Math.Vector2(1, 0).rotate(source.rotation);
-            const bulletVelocity: Phaser.Math.Vector2 = sourceForward.clone().scale(this._bulletData.speed);
-            bullet.enable(source.x + sourceForward.x * source.arcadeBody.radius, source.y + sourceForward.y * source.arcadeBody.radius,
-                bulletVelocity.x, bulletVelocity.y, this._bulletData);
+        const isFullCircle = totalAngleDeg >= 360;
+        const step = isFullCircle ? (360 / count) : (totalAngleDeg / (count - 1));
+        const startAngle = isFullCircle ? 0 : (-totalAngleDeg / 2);
 
-            // Maths way
-            // const forwardVectorX: number = Math.cos(source.rotation);
-            // const forwardVectorY: number = Math.sin(source.rotation);
-            // const bulletVelocityX: number = forwardVectorX * this._bulletData.speed;
-            // const bulletVelocityY: number = forwardVectorY * this._bulletData.speed;
-            // bullet.enable(source.x + forwardVectorX * source.arcadeBody.radius, source.y + forwardVectorY * source.arcadeBody.radius,
-            //     bulletVelocityX, bulletVelocityY, this._bulletData);
+        for (let i = 0; i < count; i++) {
+            const offsetDeg = startAngle + i * step;
+            this.fireBullet(source, offsetDeg);
         }
     }
 }

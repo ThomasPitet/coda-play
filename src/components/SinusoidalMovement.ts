@@ -15,4 +15,10 @@ export default class SinusoidalMovement implements IComponent {
         this._config = config;
         this._trollConfig = trollConfig;
     }
+
+    public reset(initialX: number) {
+        this._baseX = initialX;
+        this._elapsedTime = 0;
+        this._jukeTimer = 0;
+    }
 }

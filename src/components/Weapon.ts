@@ -1,8 +1,13 @@
-import {Physics} from 'phaser';
-import {BulletData} from "../gameData/BulletData.ts";
+import { Physics } from 'phaser';
+import { BulletData } from "../gameData/BulletData.ts";
 import Bullet from "../entities/Bullet.ts";
 import Entity from "../entities/Entity.ts";
 import IComponent from "./IComponent.ts";
+
+export type WeaponSpreadConfig = {
+    bulletCount: number;
+    spreadAngle: number;
+};
 
 export default class Weapon implements IComponent {
     public enabled: boolean = true;

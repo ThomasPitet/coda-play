@@ -67,4 +67,11 @@ export default class SinusoidalEnemy extends Entity {
         health?.heal(health!.max, false);
     }
 
+    public disable() {
+        this.stop();
+        this.removeAllListeners(Phaser.Animations.Events.ANIMATION_COMPLETE);
+        this.disableBody(true, true);
+        this._shootTimer.paused = true,  
+    }
+
 }

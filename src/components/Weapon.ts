@@ -33,7 +33,7 @@ export default class Weapon implements IComponent {
 
         const config = customSpread ?? this._spreadConfig;
         const count = config?.bulletCount ?? 1;
-        const totalAngleDeg = Config?.spreadAngle ?? 0;
+        const totalAngleDeg = config?.spreadAngle ?? 0;
 
         if (count <= 1 || totalAngleDeg === 0) {
             this.fireBullet(source, 0);
@@ -51,7 +51,7 @@ export default class Weapon implements IComponent {
     }
 
     private fireBullet(source: Entity, offsetAngleDeg: number) {
-        const bullet: bullet = this._bulletData.height() as Bullet;
+        const bullet: Bullet = this._bullets.get() as Bullet;
         if (!bullet) return;
 
         const rad = source.rotation + Phaser.Math.DegToRad(offsetAngleDeg);

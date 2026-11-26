@@ -101,6 +101,7 @@ export default class EntityManager extends Plugins.ScenePlugin {
 
         console.log("[EntityManager] Enemies initialized");
 
+        this.initObstacles();
         return this._enemies;
     }
 
@@ -146,6 +147,12 @@ export default class EntityManager extends Plugins.ScenePlugin {
                 const playerHealth = (player as Player).getComponent(Health);
                 playerHealth?.damage(1);
                 this.scene?.cameras.main.shake(100, 0.03);
+            });
+        }
+
+        if (this._obstacles) {
+            this.scene!.physics.add.collider(this._player, this._obstlces, (player, Obstacle) => {
+                (Obstacle as Obstacle).deflect(player as Player);
             });
         }
 

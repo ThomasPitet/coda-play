@@ -47,6 +47,19 @@ export default class SinusoidalEnemy extends Entity {
             });
         });
 
+        // Create animation when enemy is about to shoot in the global animation manager
+        if (!this.scene.anims.exists('ufoShoot')) {
+            this.scene.anims.create({
+                key: 'ufoShoot',
+                frames: [
+                    {key: 'sprites', frame: 'ufoRed'},
+                    {key: 'sprites', frame: 'ufoRed-shoot0'},
+                    {key: 'sprites', frame: 'ufoRed-shoot1'}
+                ],
+                frameRate: 4,
+            });
+        }
+
         this._shootTimerConfig = {
             delay: Phaser.Math.Between(data.weapon.fireRateMin, data.weapon.fireRateMax),
             callback: this.shoot,

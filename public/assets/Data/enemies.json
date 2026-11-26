@@ -11,7 +11,7 @@
         },
         "weapon": {
             "fireRateMin": 2200,
-            "fireRateMin": 3000,
+            "fireRateMax": 3000,
             "bulletCount": 3,
             "spreadAngle": 35,
             "bullet": {

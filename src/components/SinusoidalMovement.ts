@@ -3,7 +3,7 @@ import IComponent from "./IComponent.ts";
 import { SinusoidalMovementData, LevelDevilTrollData } from "../gameData/EnemyData";
 
 export default class SinusoidalMovement implements IComponent {
-    public enabled: boolean; boolean = true;
+    public enabled: boolean = true;
 
     private _config: SinusoidalMovementData;
     private _trollConfig?: LevelDevilTrollData;

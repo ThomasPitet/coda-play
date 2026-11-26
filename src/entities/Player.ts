@@ -1,6 +1,6 @@
-import {Input, Scene} from "phaser";
-import {PlayerShipData, PlayerShipsData} from "../gameData/PlayerShipsData.ts";
-import type {BulletData} from "../gameData/BulletData.ts";
+import { Input, Scene } from "phaser";
+import { PlayerShipData, PlayerShipsData } from "../gameData/PlayerShipsData.ts";
+import type { BulletData } from "../gameData/BulletData.ts";
 import Entity from './Entity.ts';
 import Health from "../components/Health.ts";
 import Movement from "../components/Movement.ts";
@@ -83,8 +83,18 @@ export default class Player extends Entity {
                 this.getComponent(Movement)?.moveHorizontally(this, deltaTime);
             }
         }
-        // Stop player from going offscreen
+
+        if (this._cursorKeys.up.isDown) {
+            this.getComponent(Movement)?.moveVertically(this, -deltaTime);
+        } else if (this._cursorKeys.down.isDown) {
+            this.getComponent(Movement)?.moveVertically(this, deltaTime);
+        }
+
         this.x = Phaser.Math.Clamp(this.x, this.displayWidth / 2, this.scene.cameras.main.width - this.displayWidth / 2);
+
+        const minY = this.scene.cameras.main.height * 0.35;
+        const maxY = this.scene.cameras.main.height - this.displayHeight / 2;
+        this.y = Phaser.Math.Clamp(this.y, minY, maxY);
 
         // Press space to shoot
         if (this._cursorKeys.space.isDown) {

@@ -30,7 +30,7 @@ export default class EntityManager extends Plugins.ScenePlugin {
     private _enemyBullets: Physics.Arcade.Group;
     private _sinusoidalEnemies: Physics.Arcade.Group;
     private _sinusoidalData: EnemiesData;
-    private _obstlces: Physics.Arcade.StaticGroup;
+    private _obstacles: Physics.Arcade.StaticGroup;
 
     constructor(scene: Scene, pluginManager: Plugins.PluginManager) {
         super(scene, pluginManager, EntityManager.PLUGIN_KEY);
@@ -151,8 +151,8 @@ export default class EntityManager extends Plugins.ScenePlugin {
         }
 
         if (this._obstacles) {
-            this.scene!.physics.add.collider(this._player, this._obstlces, (player, Obstacle) => {
-                (Obstacle as Obstacle).deflect(player as Player);
+            this.scene!.physics.add.collider(this._player, this._obstacles, (player, obstacle) => {
+                (obstacle as Obstacle).deflect(player as Player);
             });
         }
 
@@ -160,21 +160,21 @@ export default class EntityManager extends Plugins.ScenePlugin {
     }
 
     public initObstacles(): Physics.Arcade.StaticGroup {
-        this._obstlces = this.scene!.physics.add.staticGroup();
+        this._obstacles = this.scene!.physics.add.staticGroup();
 
         const cameraWidth = this.scene!.cameras.main.width;
         const cameraHeight = this.scene!.cameras.main.height;
 
-        const Obstacle1 = new Obstacle(this.scene!, cameraWidth * 0.25, cameraHeight * 0.65, 84, 84, 16);
-        const Obstacle2 = new Obstacle(this.scene!, cameraWidth * 0.50, cameraHeight * 0.52, 96, 96, 18);
-        const Obstacle3 = new Obstacle(this.scene!, cameraWidth * 0.75, cameraHeight * 0.65, 84, 84, 16);
+        const obstacle1 = new Obstacle(this.scene!, cameraWidth * 0.25, cameraHeight * 0.65, 84, 84, 16);
+        const obstacle2 = new Obstacle(this.scene!, cameraWidth * 0.50, cameraHeight * 0.52, 96, 96, 18);
+        const obstacle3 = new Obstacle(this.scene!, cameraWidth * 0.75, cameraHeight * 0.65, 84, 84, 16);
 
-        this._obstlces.add(Obstacle1);
-        this._obstlces.add(Obstacle2);
-        this._obstlces.add(Obstacle3);
+        this._obstacles.add(obstacle1);
+        this._obstacles.add(obstacle2);
+        this._obstacles.add(obstacle3);
 
         console.log("[EntityManager] Obstacles initialized");
-        return this._obstlces;
+        return this._obstacles;
     }
 
     private spawnEnemy() {

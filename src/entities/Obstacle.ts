@@ -6,7 +6,7 @@ export default class Obstacle extends Physics.Arcade.Sprite {
     private readonly _deflectionForce: number;
 
     constructor(scene: Scene, x: number, y: number, width: number = 84, height: number = 84, deflectionForce: number = 16) {
-        super(scene, x, y, 'sprites', 'uforRed');
+        super(scene, x, y, 'sprites', 'ufoRed');
         this._deflectionForce = deflectionForce;
 
         scene.add.existing(this);

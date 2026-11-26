@@ -8,6 +8,7 @@ import GameConstants from "../GameConstants.ts";
 import RegistryConstants from "../RegistryConstants.ts";
 import SinusoidalEnemy from "../entities/SinusoidalEnemy.ts";
 import { EnemiesData } from "../gameData/EnemyData.ts";
+import Obstacle from "../entities/Obstacle.ts";
 
 export default class EntityManager extends Plugins.ScenePlugin {
     public static readonly PLUGIN_KEY: string = 'EntityManager';
@@ -29,6 +30,7 @@ export default class EntityManager extends Plugins.ScenePlugin {
     private _enemyBullets: Physics.Arcade.Group;
     private _sinusoidalEnemies: Physics.Arcade.Group;
     private _sinusoidalData: EnemiesData;
+    private _obstlces: Physics.Arcade.StaticGroup;
 
     constructor(scene: Scene, pluginManager: Plugins.PluginManager) {
         super(scene, pluginManager, EntityManager.PLUGIN_KEY);
@@ -148,6 +150,24 @@ export default class EntityManager extends Plugins.ScenePlugin {
         }
 
         console.log("[EntityManager] Group collisions initialized");
+    }
+
+    public initObstacles(): Physics.Arcade.StaticGroup {
+        this._obstlces = this.scene!.physics.add.staticGroup();
+
+        const cameraWidth = this.scene!.cameras.main.width;
+        const cameraHeight = this.scene!.cameras.main.height;
+
+        const Obstacle1 = new Obstacle(this.scene!, cameraWidth * 0.25, cameraHeight * 0.65, 84, 84, 16);
+        const Obstacle2 = new Obstacle(this.scene!, cameraWidth * 0.50, cameraHeight * 0.52, 96, 96, 18);
+        const Obstacle3 = new Obstacle(this.scene!, cameraWidth * 0.75, cameraHeight * 0.65, 84, 84, 16);
+
+        this._obstlces.add(Obstacle1);
+        this._obstlces.add(Obstacle2);
+        this._obstlces.add(Obstacle3);
+
+        console.log("[EntityManager] Obstacles initialized");
+        return this._obstlces;
     }
 
     private spawnEnemy() {

@@ -1,4 +1,4 @@
-import {Loader} from "phaser";
+import { Loader } from "phaser";
 import GameConstants from "../GameConstants.ts";
 
 export default class HomeScene extends Phaser.Scene {
@@ -38,13 +38,14 @@ export default class HomeScene extends Phaser.Scene {
         this.load.json('playerShips', 'Data/playerShips.json');
         this.load.audio('sfx_laser1', 'Sounds/sfx_laser1.ogg');
         this.load.audio('sfx_laser2', 'Sounds/sfx_laser2.ogg');
+        this.load.json('enemiesData', 'Data/enemies.json');
     }
 
     create() {
         this.add.text(this.scale.width / 2, this.scale.width / 2, 'CODA SHMUP',
-            {fontSize: '72px', color: '#fff', fontFamily: 'future'}).setOrigin(0.5);
+            { fontSize: '72px', color: '#fff', fontFamily: 'future' }).setOrigin(0.5);
         this.add.text(this.scale.width / 2, this.scale.width / 2 + 72, 'Press SPACE to start',
-            {fontSize: '32px', color: '#fff'}).setOrigin(0.5);
+            { fontSize: '32px', color: '#fff' }).setOrigin(0.5);
 
         // Ignore the OS key repeat: SPACE may still be held from the previous game
         this.input.keyboard?.on('keydown-SPACE', (event: KeyboardEvent) => {
